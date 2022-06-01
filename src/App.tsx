@@ -15,7 +15,7 @@ export const App = () => {
   
 
   const characters = [
-    {name: "pikachu", health: 100, fraction:"aaa", weapon: "electricity", damagePerHit: 20},
+    {name: "Pikachu", health: 100, fraction:"aaa", weapon: "electricity", damagePerHit: 20},
     {name: "Meaus", health: 200, fraction:10, weapon: "gun", damagePerHit: 20},
     {name: "Goku", health: 300, fraction:"Saiyon", weapon: "Ki", damagePerHit: 20},
 
