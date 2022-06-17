@@ -1,34 +1,59 @@
 import './App.css';
-import React from "react";
+import React, { useState } from "react";
 import { Login } from "./Components/Login/Login";
 import { CharacterList } from './Components/CharacterList/CharacterList';
-
+import { useFetch } from './hooks/useFetch';
 // This type of component is called functional components
 // Functional component should start with a capital letter,
 // return JSX and be exported from a file
 
 
 export const App = () => {
-// JSX can have only one parent element
-  const header = (
-    <div className='App'>
-      <h1 className='jsx-style'>Hello, Sword Art Gamers</h1>
-      <h3>Welcome</h3>
-    </div>
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { response, error} = useFetch(
+    "https://jsonplaceholder.typicode.com/posts/"
   );
-const transformCharacterToListItem = (character: any) => {
-  //   // When you use repeating elements in JSX, you should use key attribute
-  //   // It's required for React to be able to update the element
-  return (
-    <li key={character.name}>
-      <h3>{character.name}</h3>
-      <p>{character.health}</p>
-      <p>{character.fraction}</p>
-      <p>{character.weapon}</p>
-      <p>{character.damagePerHit}</p>
-    </li>
-  )
-  };
+
+  if (!response){
+    return <>Loading...</>;
+  }
+
+  if (error && error instanceof Error) {
+    // we can use React. Fragment inside of div
+    // Inreact we can't render objects or arrays
+    return <>Error: {error.message}</>;
+  }
+  if (response){
+    console.log(response);
+  }
+ 
+
+// JSX can have only one parent element
+  // const header = (
+  //   <div className='App'>
+  //     <h1 className='jsx-style'>Hello, Sword Art Gamers</h1>
+  //     <h3>Welcome</h3>
+  //   </div>
+  // );
+const userNotLoggedIn = (
+  <h3 className="not-logged-in">
+    Please log in as admin to see character list
+  </h3>
+)
+
+// const transformCharacterToListItem = (character: any) => {
+//   //   // When you use repeating elements in JSX, you should use key attribute
+//   //   // It's required for React to be able to update the element
+//   return (
+//     <li key={character.name}>
+//       <h3>{character.name}</h3>
+//       <p>{character.health}</p>
+//       <p>{character.fraction}</p>
+//       <p>{character.weapon}</p>
+//       <p>{character.damagePerHit}</p>
+//     </li>
+//   )
+//   };
 
   // This variable is assigned to a JSX element
   // JSX element starts with parenthesis and ends with a closing parenthesis
@@ -55,15 +80,15 @@ const transformCharacterToListItem = (character: any) => {
 //  JSX is called a javascript XML, this is a syntax extension
 // for redering HTML in javascript
 // Elements can be also be rendered using React.createElement()
-const swordArtHeader = React.createElement(
-  "h1",
-  { className: "sword-art-header" },
-  "Hello, Sword Art Gamers"
-);
+// const swordArtHeader = React.createElement(
+//   "h1",
+//   { className: "sword-art-header" },
+//   "Hello, Sword Art Gamers"
+// );
 return (
   <div className="App">
-    <Login />
-    <CharacterList />
+    <Login setLoggedIn={setIsLoggedIn} />
+    {isLoggedIn ? <CharacterList /> : userNotLoggedIn}
   </div>
 );
 
