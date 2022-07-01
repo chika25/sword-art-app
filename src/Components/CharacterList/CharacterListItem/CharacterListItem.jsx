@@ -1,5 +1,6 @@
 import React from 'react'
 import './CharacterListItem.css'
+import {Tr, Td } from "@chakra-ui/react";
 
 // React component can receive one argument: props.
 // You can pass date to the react component by using props.
@@ -8,13 +9,14 @@ export const CharacterListItem = ({character, isChampion}) => {
   // reeturn lists of items
     const {name, health, fraction, weapon, damagePerHit} = character;
     return (
-        <li key={name}>
-          <span className="character-name">{isChampion ? `Champion ${name}` : name}</span>
-          <span>{health}</span>
-          <span>{fraction}</span>
-          <span>{weapon}</span>
-          <span>{damagePerHit}</span>
-        </li>
+        <Tr key={name}>
+          <Td className="character-name">
+            {isChampion ? `Champion ${name}` : name}</Td>
+          <Td isNumeric>{health}</Td>
+          <Td>{fraction}</Td>
+          <Td>{weapon}</Td>
+          <Td isNumeric>{damagePerHit}</Td>
+        </Tr>
       );
 }
 

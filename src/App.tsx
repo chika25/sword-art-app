@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Login } from "./Components/Login/Login";
 import { CharacterList } from './Components/CharacterList/CharacterList';
 import { useFetch } from './hooks/useFetch';
+import { CharacterSelection } from './Components/CharacterSelection/CharacterSelection';
 // This type of component is called functional components
 // Functional component should start with a capital letter,
 // return JSX and be exported from a file
@@ -10,6 +11,30 @@ import { useFetch } from './hooks/useFetch';
 
 export const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const characters = [
+    {
+        name: "Goku", 
+        health: 100, 
+        fraction:"Saiyan", 
+        weapon: "Ki", 
+        damagePerHit: 10
+    },
+    {
+        name: "Bobrik", 
+        health: 150, 
+        fraction:"Random", 
+        weapon: "Bow", 
+        damagePerHit: 6
+    },
+    {
+        name: "Valera", 
+        health: 80, 
+        fraction:"Ukraine", 
+        weapon: "Tanto", 
+        damagePerHit: 15
+    },
+
+  ];
   const { response, error} = useFetch(
     "https://jsonplaceholder.typicode.com/posts/"
   );
@@ -23,9 +48,7 @@ export const App = () => {
     // Inreact we can't render objects or arrays
     return <>Error: {error.message}</>;
   }
-  if (response){
-    console.log(response);
-  }
+  
  
 
 // JSX can have only one parent element
@@ -87,8 +110,9 @@ const userNotLoggedIn = (
 // );
 return (
   <div className="App">
-    <Login setLoggedIn={setIsLoggedIn} />
-    {isLoggedIn ? <CharacterList /> : userNotLoggedIn}
+    {!isLoggedIn ? <Login setLoggedIn={setIsLoggedIn}/> : null}
+    {isLoggedIn ? <CharacterList characters={characters}/> : userNotLoggedIn}
+    {isLoggedIn ? <CharacterSelection characters={characters}/> : null}
   </div>
 );
 

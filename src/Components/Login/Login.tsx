@@ -1,4 +1,5 @@
-import React, {useState} from 'react'
+import React, {useState, useRef, useEffect} from 'react';
+import { Input, Text, Button, Flex } from "@chakra-ui/react";
 
 const adminCredentials = {userName: "admin", password: "admin"};
 interface LoginProps {
@@ -12,11 +13,33 @@ export const Login = ({setLoggedIn} : LoginProps) => {
   // Use state returns an array with two elements: state aand the function to update it
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  //countRef.current is a reference to the current value of count; e.g 0
+  //1)Value of the reference is persistent across re-renders because values doesn't change on render
+  //2)Changing value of the reference doesn't cause component to re-render
+  //Count ref is used to log key presses in the username input
+  const countRef = useRef(0);
+
+  //We can also use refs to focus on some DOM element, usually input
+  //It can be done in three steps
+  //1)create a ref
+  //2)We use useEffect to focus on the element
+  //3)We use ref attribute to point to the element, in our case to the input
+  const passwordRef = useRef<HTMLInputElement>(null);
+  //current represents input 
+  useEffect(() => {
+    if (passwordRef.current) {
+      passwordRef.current.focus();
+    }
+  }, []);
+
   // when we type something in an input, ouchange event is triggered
   // to get the value of the input, we use event.target.value
   // you can create event handlers in two ways : anonymous function or using a named function
-  const usernameHandler = (event:any) => {
+  
+  const usernameHandler = (event: any) => {
+    countRef.current++;
+    console.log("Count", countRef.current);
     setUserName(event.target.value);
   };
 
@@ -31,14 +54,26 @@ export const Login = ({setLoggedIn} : LoginProps) => {
       }
   };
 
-  console.log("isLogedin", isLoggedIn);
   return (
-    <div>
-        <label>User name: </label>
-        <input type="text" value={userName} onChange={usernameHandler}/>
-        <label>Password</label>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button onClick={loginHandler}>Login</button>
-    </div>
+    <Flex justify={"center"} direction="column" align="center">
+        <Text size={"lg"} mb="1%">User name: </Text>
+        <Input 
+          mb="2%"
+          type="text"  
+          width="50%" 
+          value={userName} 
+          onChange={usernameHandler}
+        />
+        <Text size={"lg"} mb="1%">Password</Text>
+        <Input
+          mb="2%"
+          ref={passwordRef}  
+          type="password" 
+          value={password} 
+          width="50%"
+          onChange={(e: any) => setPassword(e.target.value)} 
+        />
+        <Button colorScheme={"blue"} onClick={loginHandler}>Login</Button>
+    </Flex>
   )
 }
