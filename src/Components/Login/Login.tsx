@@ -25,11 +25,11 @@ export const Login = ({setLoggedIn} : LoginProps) => {
   //1)create a ref
   //2)We use useEffect to focus on the element
   //3)We use ref attribute to point to the element, in our case to the input
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const userNameRef = useRef<HTMLInputElement>(null);
   //current represents input 
   useEffect(() => {
-    if (passwordRef.current) {
-      passwordRef.current.focus();
+    if (userNameRef.current) {
+      userNameRef.current.focus();
     }
   }, []);
 
@@ -57,7 +57,8 @@ export const Login = ({setLoggedIn} : LoginProps) => {
   return (
     <Flex justify={"center"} direction="column" align="center">
         <Text size={"lg"} mb="1%">User name: </Text>
-        <Input 
+        <Input
+          ref={userNameRef}  
           mb="2%"
           type="text"  
           width="50%" 
@@ -67,7 +68,6 @@ export const Login = ({setLoggedIn} : LoginProps) => {
         <Text size={"lg"} mb="1%">Password</Text>
         <Input
           mb="2%"
-          ref={passwordRef}  
           type="password" 
           value={password} 
           width="50%"
