@@ -1,9 +1,9 @@
 import './App.css';
 import React, { useState } from "react";
 import { Login } from "./Components/Login/Login";
-import { CharacterList } from './Components/CharacterList/CharacterList';
+import { CharacterScreen } from "./Components/Screens/CharacterScreen";
 import { useFetch } from './hooks/useFetch';
-import { CharacterSelection } from './Components/CharacterSelection/CharacterSelection';
+import { BattleGround } from './Components/Battleground/BattleGround';
 // This type of component is called functional components
 // Functional component should start with a capital letter,
 // return JSX and be exported from a file
@@ -11,6 +11,8 @@ import { CharacterSelection } from './Components/CharacterSelection/CharacterSel
 
 export const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isFightGoingOn, setFightStart] = useState(false);
+  const [battleCharacters, setBattleCharacters] = useState([]);
   const characters = [
     {
         name: "Goku", 
@@ -49,7 +51,7 @@ export const App = () => {
     return <>Error: {error.message}</>;
   }
   
- 
+ console.log("Selected characters", battleCharacters);
 
 // JSX can have only one parent element
   // const header = (
@@ -63,6 +65,7 @@ const userNotLoggedIn = (
     Please log in as admin to see character list
   </h3>
 )
+
 
 // const transformCharacterToListItem = (character: any) => {
 //   //   // When you use repeating elements in JSX, you should use key attribute
@@ -111,8 +114,9 @@ const userNotLoggedIn = (
 return (
   <div className="App">
     {!isLoggedIn ? <Login setLoggedIn={setIsLoggedIn}/> : null}
-    {isLoggedIn ? <CharacterList characters={characters}/> : userNotLoggedIn}
-    {isLoggedIn ? <CharacterSelection characters={characters}/> : null}
+    {isLoggedIn && !isFightGoingOn ? <CharacterScreen characters={characters} 
+      setFightStart={setFightStart} setBattleCharacters={setBattleCharacters} /> : null}
+      {isFightGoingOn ? <BattleGround battleCharacters={battleCharacters}/> : null}
   </div>
 );
 
