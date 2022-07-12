@@ -4,6 +4,7 @@ import { Login } from "./Components/Login/Login";
 import { CharacterScreen } from "./Components/Screens/CharacterScreen";
 import { useFetch } from './hooks/useFetch';
 import { BattleGround } from './Components/Battleground/BattleGround';
+import {Text} from "@chakra-ui/react"
 // This type of component is called functional components
 // Functional component should start with a capital letter,
 // return JSX and be exported from a file
@@ -13,27 +14,28 @@ export const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isFightGoingOn, setFightStart] = useState(false);
   const [battleCharacters, setBattleCharacters] = useState([]);
+  const [winner, setWinner] = useState(null);
   const characters = [
     {
         name: "Goku", 
         health: 100, 
         fraction:"Saiyan", 
         weapon: "Ki", 
-        damagePerHit: 10
+        damagePerHit: 25
     },
     {
         name: "Bobrik", 
         health: 150, 
         fraction:"Random", 
         weapon: "Bow", 
-        damagePerHit: 6
+        damagePerHit: 19
     },
     {
         name: "Valera", 
         health: 80, 
         fraction:"Ukraine", 
         weapon: "Tanto", 
-        damagePerHit: 15
+        damagePerHit: 20
     },
 
   ];
@@ -116,7 +118,17 @@ return (
     {!isLoggedIn ? <Login setLoggedIn={setIsLoggedIn}/> : null}
     {isLoggedIn && !isFightGoingOn ? <CharacterScreen characters={characters} 
       setFightStart={setFightStart} setBattleCharacters={setBattleCharacters} /> : null}
-      {isFightGoingOn ? <BattleGround battleCharacters={battleCharacters}/> : null}
+      {isFightGoingOn && !winner ? (
+        <BattleGround 
+        winner={winner}
+        setWinner={setWinner} 
+        battleCharacters={battleCharacters} /> 
+        ): null}
+      {isFightGoingOn && winner ? (
+        <Text fontSize={"5xl"} fontWeight="800"> 
+        Winner of the battle is {winner}
+        </Text> 
+        ): null}
   </div>
 );
 
