@@ -1,10 +1,11 @@
 import './App.css';
 import React, { useState } from "react";
-import { Login } from "./Components/Login/Login";
-import { CharacterScreen } from "./Components/Screens/CharacterScreen";
-import { useFetch } from './hooks/useFetch';
-import { BattleGround } from './Components/Battleground/BattleGround';
-import {Text} from "@chakra-ui/react"
+import { LoginScreen } from "../Screens/LoginScreen";
+import { CharacterScreen } from "../Screens/CharacterScreen";
+import { useFetch } from '../hooks/useFetch';
+import { BattleGroundScreen } from '../Screens/BattlegroundScreen';
+import { WinnerScreen } from '../Screens/WinnerScreen';
+import {BrowserRouter, Route, Routes } from 'react-router-dom';
 // This type of component is called functional components
 // Functional component should start with a capital letter,
 // return JSX and be exported from a file
@@ -12,7 +13,6 @@ import {Text} from "@chakra-ui/react"
 
 export const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isFightGoingOn, setFightStart] = useState(false);
   const [battleCharacters, setBattleCharacters] = useState([]);
   const [winner, setWinner] = useState(null);
   const characters = [
@@ -115,20 +115,29 @@ const userNotLoggedIn = (
 // );
 return (
   <div className="App">
-    {!isLoggedIn ? <Login setLoggedIn={setIsLoggedIn}/> : null}
-    {isLoggedIn && !isFightGoingOn ? <CharacterScreen characters={characters} 
-      setFightStart={setFightStart} setBattleCharacters={setBattleCharacters} /> : null}
-      {isFightGoingOn && !winner ? (
-        <BattleGround 
-        winner={winner}
-        setWinner={setWinner} 
-        battleCharacters={battleCharacters} /> 
-        ): null}
-      {isFightGoingOn && winner ? (
-        <Text fontSize={"5xl"} fontWeight="800"> 
-        Winner of the battle is {winner}
-        </Text> 
-        ): null}
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LoginScreen setLoggedIn={setIsLoggedIn} />}/>
+        <Route path="/characters" element={
+          <CharacterScreen 
+            isLoggedIn={isLoggedIn}
+            characters={characters}  
+            setBattleCharacters={setBattleCharacters}
+          />
+         }
+        />
+        <Route path="/winner" element={<WinnerScreen isLoggedIn={isLoggedIn} winner={winner} />} />
+        <Route path="/battleground" element={
+          <BattleGroundScreen 
+          isLoggedIn={isLoggedIn}
+          setWinner={setWinner} 
+          winner={winner} 
+          battleCharacters={battleCharacters}
+           />
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   </div>
 );
 

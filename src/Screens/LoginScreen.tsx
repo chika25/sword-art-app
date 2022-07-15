@@ -1,18 +1,22 @@
 import React, {useState, useRef, useEffect} from 'react';
 import { Input, Text, Button, Flex } from "@chakra-ui/react";
+import { useNavigate} from "react-router-dom";
 
 const adminCredentials = {userName: "admin", password: "admin"};
 interface LoginProps {
   setLoggedIn: (isLoggedIn: boolean) => void;
 }
 // state: it is kind of a variable to store user input 
-export const Login = ({setLoggedIn} : LoginProps) => {
+export const LoginScreen = ({setLoggedIn} : LoginProps) => {
   // rule 1: we never update the state directly, we always setState
   // rule 2: when state changes, the component re-renders
   // rele 3: setState is asynchromous, it doesn't block the execution of the code
   // Use state returns an array with two elements: state aand the function to update it
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+
+  //hook is used to navigate to another page
+  const navigate = useNavigate();
 
   //countRef.current is a reference to the current value of count; e.g 0
   //1)Value of the reference is persistent across re-renders because values doesn't change on render
@@ -49,6 +53,7 @@ export const Login = ({setLoggedIn} : LoginProps) => {
       password === adminCredentials.password
       ) {
         setLoggedIn(true);
+        navigate("/characters")
       } else {
         setLoggedIn(false);
       }

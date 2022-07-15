@@ -1,14 +1,19 @@
 import React, {useState, useRef} from 'react';
-import {Box, Text, Flex, useInterval} from "@chakra-ui/react";
-import { setSelectionRange } from '@testing-library/user-event/dist/utils';
+import {Box, Text, Flex} from "@chakra-ui/react";
+import { useInterval } from "../hooks/useInterval";
+import {useNavigate} from "react-router-dom";
 
-export const BattleGround = ({battleCharacters, setWinner, winner}) => {
+export const BattleGroundScreen = ({isLoggedIn, battleCharacters, setWinner, winner}) => {
     const [fighterOne, fighterTwo] = battleCharacters;
     const [firstAttacks, setFirstAttacks] = useState(false);
     const [secondAttacks, setsecondAttacks] = useState(false);
     const attacksByFighterOne = useRef(0);
     const attacksByFighterTwo = useRef(0);
+    const navigate = useNavigate();
 
+    if (!isLoggedIn) {
+        navigate("/login");
+    }
 
     const handleFightersClash = () => {
         const {name, damagePerHit} = fighterOne
@@ -19,10 +24,11 @@ export const BattleGround = ({battleCharacters, setWinner, winner}) => {
         if (fighterTwo.health - damagePerHit * attacksByFighterOne.current <= 0) {
             // we need to check prior to the state update, because state update is async
             setWinner(name);
+            navigate("/winner")
             return;
         }
         
-        
+        //change timeing of the heroes
         setTimeout(() => handleSecondFighterAttack(), 2000)
 
     };
@@ -36,6 +42,7 @@ export const BattleGround = ({battleCharacters, setWinner, winner}) => {
         attacksByFighterTwo.current += 1;
         if (fighterOne.health - damagePerHit * attacksByFighterTwo.current <= 0) {
             setWinner(name);
+            navigate("/winner")
             return;
         }
         

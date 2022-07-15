@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { Text, Checkbox, CheckboxGroup, Stack, Flex, Button, Alert, AlertIcon } from '@chakra-ui/react';
+import { useNavigate} from "react-router-dom";
 
-export const CharacterSelection = ({characters, setFightStart, setBattleCharacters}: any) => {
+export const CharacterSelection = ({characters, setBattleCharacters}: any) => {
     // By using onChange handler, we render to the change of the checkbox and either add or
     // remove the value from the state array
     const [heroesSelected, setHerosSelected] = useState < Array<string>>([]);
     const [isAlterVisible, setIsAlterVisible] = useState(false);
+
+    const navigate = useNavigate();
+
     const onHeroChanged = (event) => {
         const hero = event.target.value;
         if (heroesSelected.includes(hero)) {
@@ -21,8 +25,8 @@ export const CharacterSelection = ({characters, setFightStart, setBattleCharacte
             return;
         }
         setIsAlterVisible(false);
-        setFightStart(true);
         setBattleCharacters(characters.filter((character) => heroesSelected.includes(character.name)));
+        navigate("/battleground")
     };
 
     const alert = (
