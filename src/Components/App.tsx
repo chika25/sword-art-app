@@ -13,32 +13,7 @@ import {BrowserRouter, Route, Routes } from 'react-router-dom';
 
 export const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [battleCharacters, setBattleCharacters] = useState([]);
   const [winner, setWinner] = useState(null);
-  const characters = [
-    {
-        name: "Goku", 
-        health: 100, 
-        fraction:"Saiyan", 
-        weapon: "Ki", 
-        damagePerHit: 25
-    },
-    {
-        name: "Bobrik", 
-        health: 150, 
-        fraction:"Random", 
-        weapon: "Bow", 
-        damagePerHit: 19
-    },
-    {
-        name: "Valera", 
-        health: 80, 
-        fraction:"Ukraine", 
-        weapon: "Tanto", 
-        damagePerHit: 20
-    },
-
-  ];
   const { response, error} = useFetch(
     "https://jsonplaceholder.typicode.com/posts/"
   );
@@ -52,8 +27,7 @@ export const App = () => {
     // Inreact we can't render objects or arrays
     return <>Error: {error.message}</>;
   }
-  
- console.log("Selected characters", battleCharacters);
+
 
 // JSX can have only one parent element
   // const header = (
@@ -62,11 +36,6 @@ export const App = () => {
   //     <h3>Welcome</h3>
   //   </div>
   // );
-const userNotLoggedIn = (
-  <h3 className="not-logged-in">
-    Please log in as admin to see character list
-  </h3>
-)
 
 
 // const transformCharacterToListItem = (character: any) => {
@@ -121,8 +90,6 @@ return (
         <Route path="/characters" element={
           <CharacterScreen 
             isLoggedIn={isLoggedIn}
-            characters={characters}  
-            setBattleCharacters={setBattleCharacters}
           />
          }
         />
@@ -132,7 +99,6 @@ return (
           isLoggedIn={isLoggedIn}
           setWinner={setWinner} 
           winner={winner} 
-          battleCharacters={battleCharacters}
            />
           }
         />
@@ -149,4 +115,4 @@ return (
 
 };
 
-export default App;
+

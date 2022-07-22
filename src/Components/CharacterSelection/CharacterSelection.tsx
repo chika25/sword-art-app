@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { Text, Checkbox, CheckboxGroup, Stack, Flex, Button, Alert, AlertIcon } from '@chakra-ui/react';
 import { useNavigate} from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { setBattleCharacters } from "../../Slices/characterSlice";
 
-export const CharacterSelection = ({characters, setBattleCharacters}: any) => {
+export const CharacterSelection = () => {
+    const characters = useSelector((state: any) => state.characters.characterList);
+    //By using useDispatch, we can dispatch actions to the state
+    const dispatch = useDispatch();
     // By using onChange handler, we render to the change of the checkbox and either add or
     // remove the value from the state array
     const [heroesSelected, setHerosSelected] = useState < Array<string>>([]);
@@ -25,7 +30,9 @@ export const CharacterSelection = ({characters, setBattleCharacters}: any) => {
             return;
         }
         setIsAlterVisible(false);
-        setBattleCharacters(characters.filter((character) => heroesSelected.includes(character.name)));
+        dispatch(setBattleCharacters(
+            characters.filter((character) => heroesSelected.includes(character.name))
+        ));
         navigate("/battleground")
     };
 

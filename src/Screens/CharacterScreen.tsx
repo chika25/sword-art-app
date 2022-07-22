@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 import { CharacterList} from "../Components/CharacterList/CharacterList";
 import { CharacterSelection } from "../Components/CharacterSelection/CharacterSelection";
 import {useNavigate} from "react-router-dom";
 
 //Screens are composed of components and they group what we want to see on the screen at one time
-export const CharacterScreen = ({ characters, setBattleCharacters, isLoggedIn }) => {
+export const CharacterScreen = ({ isLoggedIn }) => {
     const navigate = useNavigate();
 
     if (!isLoggedIn) {
@@ -13,9 +13,8 @@ export const CharacterScreen = ({ characters, setBattleCharacters, isLoggedIn })
 
     return (
         <>
-            <CharacterList characters={characters}/>
-            <CharacterSelection characters={characters} 
-            setBattleCharacters={setBattleCharacters} />
+            <CharacterList />
+            <CharacterSelection />
         </>
     );
 };
