@@ -12,7 +12,6 @@ import {BrowserRouter, Route, Routes } from 'react-router-dom';
 
 
 export const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [winner, setWinner] = useState(null);
   const { response, error} = useFetch(
     "https://jsonplaceholder.typicode.com/posts/"
@@ -32,17 +31,14 @@ return (
   <div className="App">
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LoginScreen setLoggedIn={setIsLoggedIn} />}/>
+        <Route path="/" element={<LoginScreen />}/>
         <Route path="/characters" element={
-          <CharacterScreen 
-            isLoggedIn={isLoggedIn}
-          />
+          <CharacterScreen />
          }
         />
-        <Route path="/winner" element={<WinnerScreen isLoggedIn={isLoggedIn} winner={winner} />} />
+        <Route path="/winner" element={<WinnerScreen winner={winner} />} />
         <Route path="/battleground" element={
           <BattleGroundScreen 
-          isLoggedIn={isLoggedIn}
           setWinner={setWinner} 
           winner={winner} 
            />

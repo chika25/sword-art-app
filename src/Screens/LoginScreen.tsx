@@ -1,13 +1,14 @@
 import React, {useState, useRef, useEffect} from 'react';
 import { Input, Text, Button, Flex } from "@chakra-ui/react";
 import { useNavigate} from "react-router-dom";
+import { setIsLoggedIn } from '../Slices/loginSlice';
+import { useDispatch } from 'react-redux';
 
 const adminCredentials = {userName: "admin", password: "admin"};
-interface LoginProps {
-  setLoggedIn: (isLoggedIn: boolean) => void;
-}
+
 // state: it is kind of a variable to store user input 
-export const LoginScreen = ({setLoggedIn} : LoginProps) => {
+export const LoginScreen = () => {
+  const dispatch = useDispatch();
   // rule 1: we never update the state directly, we always setState
   // rule 2: when state changes, the component re-renders
   // rele 3: setState is asynchromous, it doesn't block the execution of the code
@@ -52,10 +53,10 @@ export const LoginScreen = ({setLoggedIn} : LoginProps) => {
       userName === adminCredentials.userName &&
       password === adminCredentials.password
       ) {
-        setLoggedIn(true);
+        dispatch(setIsLoggedIn(true))
         navigate("/characters")
       } else {
-        setLoggedIn(false);
+        dispatch(setIsLoggedIn(false))
       }
   };
 
