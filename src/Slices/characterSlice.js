@@ -5,6 +5,9 @@ import { createSlice} from "@reduxjs/toolkit";
 //3. The store dispatches the action the state is updated
 //4. Correct reducer is called and state is updated
 //5. The component is re-render
+
+//Slice in the redux is a container that holds the state of the part of the application
+//and provides actions and reducers to manage the state 
 export const charactersSlice = createSlice({
     name: "characters",
     initialState: {
