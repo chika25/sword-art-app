@@ -1,4 +1,16 @@
-import { createSlice} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice} from "@reduxjs/toolkit";
+
+//CreateAsyncThunk is a function that allows us to get data asynchronously
+//It takes type and a function that returns a promise
+//Type has to be a name of the slice , slash , name of the action
+export const getCharacters = createAsyncThunk(
+  "characters/getCharacters", 
+  async () => {
+    const response = await fetch('http://localhost:8080/characters');
+    const data = await response.json();
+    return data;
+  }
+);
 //redux data flow
 //1. We click on a button that triggers an action
 //2. The action is dispatched to the store( we need to provide type and played)
@@ -11,29 +23,9 @@ import { createSlice} from "@reduxjs/toolkit";
 export const charactersSlice = createSlice({
     name: "characters",
     initialState: {
-      characterList: [
-        {
-            name: "Goku", 
-            health: 100, 
-            fraction:"Saiyan", 
-            weapon: "Ki", 
-            damagePerHit: 25
-        },
-        {
-            name: "Bobrik", 
-            health: 150, 
-            fraction:"Random", 
-            weapon: "Bow", 
-            damagePerHit: 19
-        },
-        {
-            name: "Valera", 
-            health: 80, 
-            fraction:"Ukraine", 
-            weapon: "Tanto", 
-            damagePerHit: 20
-        },  
-      ],
+      characterList: [],
+      status: "idle",
+      error: null,
       battleCharacters: [],
     },
     reducers: {
@@ -49,6 +41,17 @@ export const charactersSlice = createSlice({
         };
       },
     },
+    extraReducers(builder){
+      builder.addCase(getCharacters.pending, (state, action) => {
+        state.status = "loading";
+      }).addCase(getCharacters.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.characterList = action.payload;
+      }).addCase(getCharacters.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error
+;      });
+    }
   });
   
   // Action creators are generated for each case reducer function

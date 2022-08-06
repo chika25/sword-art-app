@@ -6,10 +6,13 @@ import loginReducer from './Slices/loginSlice';
 //that we don't share and that is managed by component itself, we can use simple useState
 //1: We need to create the store
 //2. We need to provide redux store to react 
-export default configureStore({
+export const store = configureStore({
   reducer: {
     //name needs to match with the name of the slice
     characters: charactersReducer,
     login: loginReducer
   },
 })
+
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
