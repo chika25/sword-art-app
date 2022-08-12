@@ -6,6 +6,7 @@ import { useFetch } from '../hooks/useFetch';
 import { BattleGroundScreen } from '../Screens/BattlegroundScreen';
 import { WinnerScreen } from '../Screens/WinnerScreen';
 import {BrowserRouter, Route, Routes } from 'react-router-dom';
+import { AddCharacterScreen } from '../Screens/AddCharacterScreen';
 // This type of component is called functional components
 // Functional component should start with a capital letter,
 // return JSX and be exported from a file
@@ -37,6 +38,7 @@ return (
          }
         />
         <Route path="/winner" element={<WinnerScreen winner={winner} />} />
+        <Route path="/manageCharacter" element={<AddCharacterScreen />} />
         <Route path="/battleground" element={
           <BattleGroundScreen 
           setWinner={setWinner} 
