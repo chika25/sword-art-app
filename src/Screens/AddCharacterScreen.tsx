@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 //Tip to update
-//1 Make sure you provide id when you update the character (url should look like)
-//http://localhost:8080/characters/1 and request type should be PUT
+//1 Make sure you provide id when you update the character (url should look like):
+//http://localhost:8080/characters/1 and request type should be PUT:
 //2 Make sure you empty the characterToUpdate(make it null) once you perform the update, oe add will not work:
 //3 Please implement appropriate action for update, it will look similar to add action:
 //4 Make sure to covert cases in extraReducers
@@ -52,20 +52,24 @@ export const AddCharacterScreen = () => {
         navigate("/characters");
     };
 
-    const handleCharacterAppdate = () => {
+    const handleCharacterUpdate = () => {
         
         if (!validateValues()) {
             return;
         }
         setIsAlertVisible(false);
+
         const updatedCharacter = {
+            id: character.id,
             name,
             fraction,
             health: parseInt(health),
             damagePerHit: parseInt(damagePerHit),
             weapon
         };
+
         dispatch(updateCharacter(updatedCharacter as Character));
+
        //empty the characterToUpdate
         dispatch(setCharacterToUpdate(null));
         navigate("/characters");
@@ -91,7 +95,7 @@ export const AddCharacterScreen = () => {
        
           <Input type="text" value={weapon} onChange={(e) => setWeapon(e.target.value)} placeholder="Please enter a character weapon" />
         
-          <Button onClick={character ? handleCharacterAppdate :handleCharacterAddition}>{character ? "Update Character" : "Add Character" }</Button>
+          <Button onClick={character ? handleCharacterUpdate :handleCharacterAddition}>{character ? "Update Character" : "Add Character" }</Button>
           {/* If it isAlertVisible is true, show alert */}
           {isAlertVisible && alert}
       </Stack>

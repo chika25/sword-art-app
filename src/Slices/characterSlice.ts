@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
+import { isAnyOf } from "@reduxjs/toolkit";
 
 
 //CreateAsyncThunk is a function that allows us to get data asynchronously
@@ -48,12 +49,13 @@ export const addCharacter = createAsyncThunk("characters/addCharacter", async (c
   return response.data;
 });
 
+
 //axios.put is used to update a character
 export const updateCharacter = createAsyncThunk("characters/addCharacter", async (character: Character) => {
   const response = await axios.put(`http://localhost:8080/characters/${character.id}`, character);
-  
   return response.data;
 });
+
 
 //redux data flow
 //1. We click on a button that triggers an action
@@ -101,28 +103,15 @@ export const charactersSlice = createSlice({
       }).addCase(getCharacters.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error
-      }).addCase(addCharacter.pending, (state, action) => {
+      }).addMatcher(isAnyOf(addCharacter.pending, updateCharacter.pending), (state, action) => {
         state.status = "loading";
-      }).addCase(addCharacter.fulfilled, (state, action) => {
+      }).addMatcher(isAnyOf(addCharacter.fulfilled, updateCharacter.fulfilled), (state, action) => {
         state.status = "succeeded";
         state.characterList.push(action.payload);
-      }).addCase(addCharacter.rejected, (state, action) => {
+      }).addMatcher(isAnyOf(addCharacter.rejected, updateCharacter.rejected), (state, action) => {
         state.status = "failed";
         state.error = action.error;
       })
-      //If I add these addCases below, the login screen won't be shown
-      // .addCase(updateCharacter.pending, (state, action) => {
-      //   state.status = "loading";
-      // })
-      // .addCase(updateCharacter.fulfilled, (state, action) => {
-      //   state.status = "succeeded";
-      //   state.characterList.push(action.payload);
-      // })
-      // .addCase(updateCharacter.rejected, (state, action) => {
-      //   state.status = "failed";
-      //   state.error = action.error
-      // })
-      
     }
   });
   

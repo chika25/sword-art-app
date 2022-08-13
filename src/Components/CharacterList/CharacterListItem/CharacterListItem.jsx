@@ -19,6 +19,8 @@ const navigate = useNavigate();
       navigate('/manageCharacter');
       
     }
+
+
     return (
         <Tr key={name}>
           <Td className="character-name">
